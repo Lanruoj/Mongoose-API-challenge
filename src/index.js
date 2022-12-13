@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 
 const devRouter = require("./controllers/Developer/DeveloperRouting");
 app.use("/developers", devRouter);
+const animalRouter = require("./controllers/Animal/AnimalRouting");
+app.use("/animals", animalRouter);
 
 async function dbConnect() {
   let databaseURL = "mongodb://localhost:27017/ExpressMongoStorage";
