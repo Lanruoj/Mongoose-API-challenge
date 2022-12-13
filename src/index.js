@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const devRouter = require("./controllers/Developer/DeveloperRouting");
 app.use("/developers", devRouter);
 const animalRouter = require("./controllers/Animal/AnimalRouting");
+const { Animal } = require("./models/Animal/AnimalModel");
+const { Developer } = require("./models/Developer/DeveloperModel");
 app.use("/animals", animalRouter);
 
 async function dbConnect() {
@@ -75,6 +77,9 @@ app.get("/databaseHealth", (request, response) => {
 
 // Reset database
 app.put("/reset", async (request, response) => {
+  // Save all documents from each collection
+  let animalDocuments = await Animal.find({});
+  let developerDocuments = await Developer.find({});
   // Drop database
   await mongoose.connection.db.dropDatabase();
   // Parse collections from connection object
@@ -83,6 +88,9 @@ app.put("/reset", async (request, response) => {
     // Create collection using parsed collection name
     mongoose.connection.db.createCollection(collectionName);
   }
+  // Recreate all documents into their collections
+  await Animal.insertMany(animalDocuments);
+  await Developer.insertMany(developerDocuments);
 
   response.json({
     message: "Database reset",
