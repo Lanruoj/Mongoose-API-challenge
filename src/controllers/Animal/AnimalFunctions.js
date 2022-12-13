@@ -11,4 +11,16 @@ async function getAllAnimals() {
   return allAnimals;
 }
 
-module.exports = { getAllAnimals };
+async function createNewAnimal(name, species, age, colour) {
+  console.log("createNewAnimal()");
+  let newAnimal = await Animal.create({
+    name: name,
+    species: species,
+    age: age,
+    colour: colour,
+  });
+
+  return newAnimal;
+}
+
+module.exports = { getAllAnimals, createNewAnimal };
