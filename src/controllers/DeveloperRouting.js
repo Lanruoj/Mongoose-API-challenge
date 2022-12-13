@@ -23,8 +23,9 @@ router.get("/", async (request, response) => {
 router.post("/", async (request, response) => {
   let newDev = null;
   // Read data from the request body, assuming that was a JSON object
-  let name = request.body.name === "" ? "New Developer" : request.body.name;
-  newDev = await createDev(name, request.body.skills);
+  let devName = request.body.name || "New Developer";
+  let devSkills = request.body.skills || "Problem solving";
+  newDev = await createDev(devName, devSkills);
 
   response.json({
     developer: newDev,
