@@ -75,9 +75,12 @@ app.get("/databaseHealth", (request, response) => {
 
 // Reset database
 app.put("/reset", async (request, response) => {
-  let collections = await mongoose.connection.collections;
+  // Drop database
   await mongoose.connection.db.dropDatabase();
+  // Parse collections from connection object
+  let collections = await mongoose.connection.collections;
   for (collectionName of Object.keys(collections)) {
+    // Create collection using parsed collection name
     mongoose.connection.db.createCollection(collectionName);
   }
 
