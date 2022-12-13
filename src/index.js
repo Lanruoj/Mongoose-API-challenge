@@ -51,7 +51,7 @@ async function dbWipe() {
   console.log("Database is now empty!");
 }
 
-// WIPE DATABASE
+// Wipe database
 app.delete("/wipe", async (req, res) => {
   await dbWipe();
   res.json({
@@ -70,6 +70,19 @@ app.get("/databaseHealth", (request, response) => {
     dbName: databaseName,
     dbModels: databaseModels,
     dbHost: databaseHost,
+  });
+});
+
+// Reset database
+app.put("/reset", async (request, response) => {
+  let collections = await mongoose.connection.collections;
+  await mongoose.connection.db.dropDatabase();
+  for (collectionName of Object.keys(collections)) {
+    mongoose.connection.db.createCollection(collectionName);
+  }
+
+  response.json({
+    message: "Database reset",
   });
 });
 
