@@ -1,4 +1,8 @@
-const { getAllAnimals, createNewAnimal } = require("./AnimalFunctions");
+const {
+  getAllAnimals,
+  createNewAnimal,
+  updateAnimal,
+} = require("./AnimalFunctions");
 const Animal = require("../../models/Animal/AnimalModel");
 const express = require("express");
 const router = express.Router();
@@ -28,6 +32,16 @@ router.post("/", async (request, response) => {
 
   response.json({
     newAnimal: newAnimal,
+  });
+});
+
+router.put("/", async (request, response) => {
+  console.log("PUT /animals");
+  let fields = request.body;
+  let updatedAnimal = await updateAnimal(fields);
+
+  response.json({
+    animal: updatedAnimal,
   });
 });
 

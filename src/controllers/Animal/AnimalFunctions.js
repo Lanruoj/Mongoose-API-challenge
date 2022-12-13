@@ -23,4 +23,20 @@ async function createNewAnimal(name, species, age, colour) {
   return newAnimal;
 }
 
-module.exports = { getAllAnimals, createNewAnimal };
+async function updateAnimal(fields) {
+  console.log("updateAnimal()");
+  let updatedAnimal = await Animal.findOneAndUpdate(
+    { _id: fields.id },
+    {
+      name: fields.name && fields.name,
+      species: fields.species && fields.species,
+      age: fields.age && fields.age,
+      colour: fields.colour && fields.colour,
+    },
+    { returnOriginal: false }
+  );
+
+  return updatedAnimal;
+}
+
+module.exports = { getAllAnimals, createNewAnimal, updateAnimal };
