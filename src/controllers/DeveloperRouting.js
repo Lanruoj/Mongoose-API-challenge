@@ -1,4 +1,5 @@
 const express = require("express");
+const { Developer } = require("../models/DeveloperModel");
 const router = express.Router();
 
 const {
@@ -6,7 +7,30 @@ const {
   getAllDevs,
   updateDevById,
   deleteDevById,
+  seedDevs,
 } = require("./DeveloperFunctions");
+
+// Seed developers
+router.post("/seed", async (request, response) => {
+  let dev1 = new Developer({
+    name: "Tane",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Python"],
+  });
+  let dev2 = new Developer({
+    name: "Archie",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Python"],
+  });
+  let dev3 = new Developer({
+    name: "Bobo",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Python"],
+  });
+
+  seedArray = await seedDevs([dev1, dev2, dev3]);
+
+  response.send({
+    seeds: seedArray,
+  });
+});
 
 // Get all devs
 router.get("/", async (request, response) => {

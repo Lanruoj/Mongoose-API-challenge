@@ -1,5 +1,10 @@
 const { Developer } = require("../models/DeveloperModel");
 
+async function seedDevs(seeds) {
+  let seededDevs = await Developer.insertMany([...seeds]);
+  return seededDevs;
+}
+
 async function createDev(newName, newSkills) {
   let createResult = await Developer.create({
     name: newName,
@@ -40,4 +45,5 @@ module.exports = {
   getAllDevs,
   updateDevById,
   deleteDevById,
+  seedDevs,
 };
