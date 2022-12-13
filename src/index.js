@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
 
-const devRouter = require("./controllers/DeveloperRouting");
+const devRouter = require("./controllers/Developer/DeveloperRouting");
 app.use("/developers", devRouter);
 
 async function dbConnect() {
@@ -40,6 +40,20 @@ dbConnect();
 app.get("/", (req, res) => {
   res.json({
     message: "Hello world!",
+  });
+});
+
+async function dbWipe() {
+  console.log("Emptying out the database...");
+  await mongoose.connection.db.dropDatabase();
+  console.log("Database is now empty!");
+}
+
+// WIPE DATABASE
+app.delete("/wipe", async (req, res) => {
+  await dbWipe();
+  res.json({
+    message: "Database wiped",
   });
 });
 

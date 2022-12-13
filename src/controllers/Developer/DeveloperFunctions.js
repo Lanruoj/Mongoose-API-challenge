@@ -1,4 +1,4 @@
-const { Developer } = require("../models/DeveloperModel");
+const { Developer } = require("../../models/Developer/DeveloperModel");
 
 async function seedDevs(seeds) {
   let seededDevs = await Developer.insertMany([...seeds]);
