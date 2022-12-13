@@ -1,4 +1,11 @@
 const { Animal } = require("../../models/Animal/AnimalModel");
+const AnimalSeeds = require("../Animal/AnimalSeeds");
+
+async function seedAnimals() {
+  console.log("seedAnimals()");
+  let seededAnimals = await Animal.insertMany(AnimalSeeds);
+  return seededAnimals;
+}
 
 async function getAllAnimals() {
   console.log("getAllAnimals()");
@@ -46,4 +53,10 @@ async function deleteAnimal(id) {
   });
 }
 
-module.exports = { getAllAnimals, createNewAnimal, updateAnimal, deleteAnimal };
+module.exports = {
+  getAllAnimals,
+  createNewAnimal,
+  updateAnimal,
+  deleteAnimal,
+  seedAnimals,
+};

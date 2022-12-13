@@ -3,10 +3,21 @@ const {
   createNewAnimal,
   updateAnimal,
   deleteAnimal,
+  seedAnimals,
 } = require("./AnimalFunctions");
 const Animal = require("../../models/Animal/AnimalModel");
 const express = require("express");
 const router = express.Router();
+
+// Seed Animals from AnimalSeeds.js
+router.post("/seed", async (request, response) => {
+  console.log("POST /seed");
+  let seededAnimals = await seedAnimals();
+
+  response.json({
+    animals: seededAnimals,
+  });
+});
 
 // Show all Animals
 router.get("/", async (request, response) => {
@@ -36,6 +47,7 @@ router.post("/", async (request, response) => {
   });
 });
 
+// Update Animal
 router.put("/", async (request, response) => {
   console.log("PUT /animals");
   let fields = request.body;
@@ -46,6 +58,7 @@ router.put("/", async (request, response) => {
   });
 });
 
+// Delete Animal
 router.delete("/", async (request, response) => {
   console.log("DELETE /animals");
   let animalID = request.body.id;
