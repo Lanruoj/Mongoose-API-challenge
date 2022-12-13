@@ -39,4 +39,11 @@ async function updateAnimal(fields) {
   return updatedAnimal;
 }
 
-module.exports = { getAllAnimals, createNewAnimal, updateAnimal };
+async function deleteAnimal(id) {
+  console.log("deleteAnimal()");
+  let deletedAnimal = await Animal.deleteOne({
+    _id: id,
+  });
+}
+
+module.exports = { getAllAnimals, createNewAnimal, updateAnimal, deleteAnimal };

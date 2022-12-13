@@ -2,6 +2,7 @@ const {
   getAllAnimals,
   createNewAnimal,
   updateAnimal,
+  deleteAnimal,
 } = require("./AnimalFunctions");
 const Animal = require("../../models/Animal/AnimalModel");
 const express = require("express");
@@ -42,6 +43,16 @@ router.put("/", async (request, response) => {
 
   response.json({
     animal: updatedAnimal,
+  });
+});
+
+router.delete("/", async (request, response) => {
+  console.log("DELETE /animals");
+  let animalID = request.body.id;
+  await deleteAnimal(animalID);
+
+  response.json({
+    message: "Animal deleted",
   });
 });
 
