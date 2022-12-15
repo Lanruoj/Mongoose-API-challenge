@@ -1,10 +1,13 @@
 const { response } = require("express");
+const { animalSchema } = require("./models/Animal/AnimalModel");
+const { developerSchema } = require("./models/Developer/DeveloperModel");
 const express = require("express");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", true);
 
 const devRouter = require("./controllers/Developer/DeveloperRouting");
 app.use("/developers", devRouter);
@@ -77,14 +80,23 @@ app.get("/databaseHealth", (request, response) => {
 
 // Reset database
 app.put("/reset", async (request, response) => {
-  // Save all documents from each collection
-  let animalDocuments = await Animal.find({});
-  let developerDocuments = await Developer.find({});
   // Drop database
   await mongoose.connection.db.dropDatabase();
-  // Recreate all documents into their collections
-  await Animal.insertMany(animalDocuments);
-  await Developer.insertMany(developerDocuments);
+  // Recreate collections from the connection objects
+  for (collectionName of Object.keys(mongoose.connection.collections)) {
+    let schema = null;
+    switch (collectionName) {
+      case "animals":
+        schema = animalSchema;
+        break;
+      case "developers":
+        schema = developerSchema;
+        break;
+    }
+    await mongoose.connection.db.createCollection(collectionName, {
+      validator: collectionName === "animals" ? animalSchema : developerSchema,
+    });
+  }
 
   response.json({
     message: "Database reset",
