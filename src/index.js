@@ -94,7 +94,7 @@ app.put("/reset", async (request, response) => {
         break;
     }
     await mongoose.connection.db.createCollection(collectionName, {
-      validator: collectionName === "animals" ? animalSchema : developerSchema,
+      validator: schema,
     });
   }
 
